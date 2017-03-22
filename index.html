@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="utf-8">
+	<title>psychic</title>
+</head>
+<body>
+
+	<div>Guess what letter I'm thinking of...</div>
+
+	<br>
+
+	<div id="wins">Wins: 0</div>
+
+	<br>
+
+	<div id="losses">Losses: 0</div>
+
+	<br>
+
+	<div id="guesses_left">Guesses Left: 10</div>
+
+	<br>
+
+	<div id="used_letters">Your Guesses so far:</div>
+
+<script type="text/javascript">
+	
+	game = {
+
+		abc: ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"],
+
+		wins: 0,
+
+		losses: 0,
+
+		guesses_left: 10,
+
+		used_letters: [],
+
+		get_wins: function(){document.getElementById("wins").innerHTML = "Wins: " + game.wins;},
+
+		get_losses: function(){document.getElementById("losses").innerHTML = "Losses: " + game.losses;},
+
+		get_guesses: function(){document.getElementById("guesses_left").innerHTML = "Guesses Left: " + game.guesses_left;},
+
+		get_used_letters: function(){document.getElementById("used_letters").innerHTML = "Used Letters: " + game.used_letters.join(", ");},
+
+		random_index: function(){
+			return Math.floor(Math.random() * (this.abc.length));
+		},
+
+		contains: 
+			function(a, obj) {
+			    for (var i = 0; i < a.length; i++) {
+			        if (a[i] === obj) {
+			            return true;
+			        }
+			    }
+			    return false;
+			}
+
+	}
+
+var random_letter = game.abc[game.random_index()];
+
+game.get_wins();
+
+game.get_losses();
+
+game.get_guesses();
+
+game.get_used_letters();
+
+document.onkeyup = function(event){
+
+	var user_guess = event.key;
+
+	if((game.contains(game.used_letters,user_guess) === false) && (game.contains(game.abc,user_guess))){
+
+		game.guesses_left--;
+
+		game.used_letters.push(user_guess);
+
+		game.get_guesses();
+
+		game.get_used_letters();
+
+		if(user_guess === random_letter){
+
+			game.wins++;
+
+			game.guesses_left = 10;
+
+			game.used_letters = [];
+
+			game.get_wins();
+
+			game.get_guesses();
+
+			game.get_used_letters();
+			
+			random_letter = game.abc[game.random_index()];
+
+		}
+
+		if(game.guesses_left === 0){
+
+			game.losses++;
+
+			game.guesses_left = 10;
+
+			game.used_letters = [];
+
+			game.get_losses();
+
+			game.get_guesses();
+
+			game.get_used_letters();
+
+			random_letter = game.abc[game.random_index()];
+			
+		}
+
+	}
+
+
+
+
+
+}
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
